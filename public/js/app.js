@@ -47361,11 +47361,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['thought'],
   data: function data() {
-    return {};
+    return {
+      editMode: false
+    };
+  },
+
+  methods: {
+    onClickDelete: function onClickDelete() {
+      this.$emit('delete');
+    },
+    onClickEdit: function onClickEdit() {
+      this.editMode = true;
+    },
+    onClickUpdate: function onClickUpdate() {
+      this.editMode = false;
+      this.$emit('updated', thought);
+    }
   }
 });
 
@@ -47383,24 +47400,74 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "card-body" }, [
-      _c("p", [_vm._v(_vm._s(_vm.thought.description))])
+      !this.editMode
+        ? _c("p", [_vm._v(_vm._s(_vm.thought.description))])
+        : _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.thought.description,
+                expression: "thought.description"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text" },
+            domProps: { value: _vm.thought.description },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.thought, "description", $event.target.value)
+              }
+            }
+          })
     ]),
     _vm._v(" "),
-    _vm._m(0)
+    _c("div", { staticClass: "card-footer" }, [
+      !this.editMode
+        ? _c(
+            "button",
+            {
+              staticClass: "btn btn-default",
+              on: {
+                click: function($event) {
+                  _vm.onClickEdit()
+                }
+              }
+            },
+            [_vm._v("Editar")]
+          )
+        : _c(
+            "button",
+            {
+              staticClass: "btn btn-success",
+              on: {
+                click: function($event) {
+                  _vm.onClickUpdate()
+                }
+              }
+            },
+            [_vm._v("Guardar")]
+          ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-danger",
+          on: {
+            click: function($event) {
+              _vm.onClickDelete()
+            }
+          }
+        },
+        [_vm._v("Eliminar")]
+      )
+    ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-footer" }, [
-      _c("button", { staticClass: "btn btn-default" }, [_vm._v("Editar")]),
-      _vm._v(" "),
-      _c("button", { staticClass: "btn btn-danger" }, [_vm._v("Eliminar")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -47654,6 +47721,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   methods: {
     addThought: function addThought(thought) {
       this.thoughts.push(thought);
+    },
+    deleteThought: function deleteThought(index) {
+      this.thoughts.splice(index, 1);
+    },
+    updateThought: function updateThought(index, thought) {
+      this.thoughts[index] = thought;
     }
   }
 });
@@ -47673,10 +47746,18 @@ var render = function() {
       [
         _c("form-component", { on: { new: _vm.addThought } }),
         _vm._v(" "),
-        _vm._l(_vm.thoughts, function(thought) {
+        _vm._l(_vm.thoughts, function(thought, index) {
           return _c("thought-component", {
             key: thought.id,
-            attrs: { thought: thought }
+            attrs: { thought: thought },
+            on: {
+              delete: function($event) {
+                _vm.deleteThought(index)
+              },
+              update: function($event) {
+                _vm.updateThought.apply(void 0, [index].concat(_vm.arg))
+              }
+            }
           })
         })
       ],
