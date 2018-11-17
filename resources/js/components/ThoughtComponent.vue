@@ -1,9 +1,9 @@
 <template>
   <div class="card mt-4">
-                <div class="card-header">Publicado en 17/0/2018</div>
+                <div class="card-header">Publicado en {{thought.created_at}}</div>
 
                 <div class="card-body">
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sit eum asperiores officiis blanditiis modi, perferendis explicabo nam cumque iste nostrum pariatur voluptatum, optio saepe? Perferendis eos voluptatibus repudiandae saepe laudantium?</p>
+                    <p>{{ thought.description}}</p>
                 </div>
                 <div class="card-footer">
                     <button class="btn btn-default">Editar</button>
@@ -13,6 +13,11 @@
 </template>
 <script>
 export default {
-  
+  props:['thought'],
+  data(){
+    return {
+      
+    }
+  }
 }
 </script>

@@ -47362,7 +47362,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['thought'],
+  data: function data() {
+    return {};
+  }
+});
 
 /***/ }),
 /* 50 */
@@ -47372,31 +47377,27 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "card mt-4" }, [
+    _c("div", { staticClass: "card-header" }, [
+      _vm._v("Publicado en " + _vm._s(_vm.thought.created_at))
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-body" }, [
+      _c("p", [_vm._v(_vm._s(_vm.thought.description))])
+    ]),
+    _vm._v(" "),
+    _vm._m(0)
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card mt-4" }, [
-      _c("div", { staticClass: "card-header" }, [
-        _vm._v("Publicado en 17/0/2018")
-      ]),
+    return _c("div", { staticClass: "card-footer" }, [
+      _c("button", { staticClass: "btn btn-default" }, [_vm._v("Editar")]),
       _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c("p", [
-          _vm._v(
-            "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sit eum asperiores officiis blanditiis modi, perferendis explicabo nam cumque iste nostrum pariatur voluptatum, optio saepe? Perferendis eos voluptatibus repudiandae saepe laudantium?"
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-footer" }, [
-        _c("button", { staticClass: "btn btn-default" }, [_vm._v("Editar")]),
-        _vm._v(" "),
-        _c("button", { staticClass: "btn btn-danger" }, [_vm._v("Eliminar")])
-      ])
+      _c("button", { staticClass: "btn btn-danger" }, [_vm._v("Eliminar")])
     ])
   }
 ]
@@ -47478,7 +47479,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      description: ''
+    };
+  },
+
+  methods: {
+    newThought: function newThought() {
+      var thought = {
+        id: 5,
+        description: this.description,
+        created_at: '11/22/2015'
+      };
+      this.$emit('new', thought);
+      this.description = '';
+    }
+  }
+});
 
 /***/ }),
 /* 53 */
@@ -47488,28 +47507,49 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-header" }, [
-        _vm._v("¿En qué estás pensando ahora?")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c("form", { attrs: { action: "" } }, [
+  return _c("div", { staticClass: "card" }, [
+    _c("div", { staticClass: "card-header" }, [
+      _vm._v("¿En qué estás pensando ahora?")
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-body" }, [
+      _c(
+        "form",
+        {
+          attrs: { action: "" },
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              _vm.newThought()
+            }
+          }
+        },
+        [
           _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "thought" } }, [
               _vm._v("Ahora estoy pensando en: ")
             ]),
             _vm._v(" "),
             _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.description,
+                  expression: "description"
+                }
+              ],
               staticClass: "form-control",
-              attrs: { type: "text" }
+              attrs: { type: "text", name: "thought" },
+              domProps: { value: _vm.description },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.description = $event.target.value
+                }
+              }
             })
           ]),
           _vm._v(" "),
@@ -47518,11 +47558,12 @@ var staticRenderFns = [
             { staticClass: "btn btn-primary", attrs: { type: "submit" } },
             [_vm._v("Enviar Pensamiento")]
           )
-        ])
-      ])
+        ]
+      )
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -47595,7 +47636,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      thoughts: [{
+        'id': 1,
+        'description': 'abc',
+        'created_at': '12/25/2018'
+      }, {
+        'id': 2,
+        'description': 'abcde',
+        'created_at': '12/25/2018'
+      }]
+    };
+  },
+
+  methods: {
+    addThought: function addThought(thought) {
+      this.thoughts.push(thought);
+    }
+  }
+});
 
 /***/ }),
 /* 56 */
@@ -47609,8 +47670,17 @@ var render = function() {
     _c(
       "div",
       { staticClass: "col-md-8" },
-      [_c("form-component"), _vm._v(" "), _c("thought-component")],
-      1
+      [
+        _c("form-component", { on: { new: _vm.addThought } }),
+        _vm._v(" "),
+        _vm._l(_vm.thoughts, function(thought) {
+          return _c("thought-component", {
+            key: thought.id,
+            attrs: { thought: thought }
+          })
+        })
+      ],
+      2
     )
   ])
 }
