@@ -14,6 +14,7 @@
             </div>
 </template>
 <script>
+import axios from 'axios';
 export default {
   data(){
     return{
@@ -22,13 +23,16 @@ export default {
   },
   methods:{
     newThought(){
-      const thought = {
-        id: 5,
-        description:this.description,
-        created_at : '11/22/2015'
+      const params = {
+        description:this.description
       }
-      this.$emit('new', thought);
-     this.description = '';
+      this.description = '';
+      axios.post('http://127.0.0.1:8000/thoughts',params)
+        .then((response) => {
+          const thought = response.data;
+          this.$emit('new', thought);
+          
+        })
     }
   }
 }

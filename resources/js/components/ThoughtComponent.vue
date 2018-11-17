@@ -23,14 +23,25 @@ export default {
   },
   methods:{
     onClickDelete(){
-      this.$emit('delete');
+      axios.delete(`http://127.0.0.1:8000/thoughts/${this.thought.id}`)
+        .then(() => {
+          this.$emit('delete');
+        })
+      
     },
     onClickEdit(){
       this.editMode = true;
     },
     onClickUpdate(){
-      this.editMode = false;
-      this.$emit('updated',thought);
+      const params = {
+        description: this.thought.description
+      }
+      axios.put(`http://127.0.0.1:8000/thoughts/${this.thought.id}`,params)
+        .then((response) => {
+          this.editMode = false;
+          this.$emit('updated',response.data);
+        })
+      
     }
   }
 }

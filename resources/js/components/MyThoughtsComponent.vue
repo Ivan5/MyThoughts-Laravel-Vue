@@ -11,19 +11,14 @@
 export default {
   data(){
     return {
-      thoughts:[
-        {
-          'id' : 1,
-          'description' : 'abc',
-          'created_at' : '12/25/2018'
-        },
-        {
-          'id' : 2,
-          'description' : 'abcde',
-          'created_at' : '12/25/2018'
-        }
-      ]
+      thoughts:[]
     }
+  },
+  mounted(){
+    axios.get('http://127.0.0.1:8000/thoughts')
+      .then((response) => {
+        this.thoughts = response.data;
+      })
   },
   methods:{
     addThought(thought){
